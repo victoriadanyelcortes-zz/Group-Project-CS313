@@ -21,6 +21,7 @@ public:
 
 template <typename T> class List {
     Node<T> *head = nullptr;
+    int size = 0;
 
 public:
     void prepend(T val) {
@@ -36,6 +37,10 @@ public:
           std::cout << temp->val << std::endl;
           temp = temp->next;
       }
+    }
+
+    int get_size() {
+        return size;
     }
 
     ~List() noexcept {
