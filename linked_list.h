@@ -48,35 +48,6 @@ public:
         }
     }
 
-    class pseudo_iterator {
-        friend class List<T>;
-        Node<T> *cur;
-        explicit pseudo_iterator(Node<T> *start) {
-            cur = start;
-        }
-
-    public:
-        const T *val() const {
-            // get current val
-            if(cur == nullptr) {
-                return nullptr;
-            }
-
-            return &cur->val;
-        }
-
-        void go_to_next_val() {
-            if (cur == nullptr){
-                return;
-            }
-            cur = cur->next;
-        }
-    };
-
-    pseudo_iterator get_iter() {
-        return pseudo_iterator(head);
-    }
-
     class Itr {
         friend class List<T>;
         Node<T> *ptr_;
