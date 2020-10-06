@@ -22,19 +22,86 @@ public:
 
 template <typename T> class List {
     Node<T> *head = nullptr;
+    Node<T> *tail = nullptr;
     int size = 0;
 
-//    Node<T> storage[1000000];
- //   unsigned char storage[sizeof(Node<T>) * 1000] = {0};
+//   Node<T> storage[1000000];
+//   unsigned char storage[sizeof(Node<T>) * 1000] = {0};
 
 public:
     void prepend(T val) {
         //void *tgt = &storage[size * sizeof(Node<T>)];
         //auto *node = new(tgt) Node<T>(val);
         auto *node = new Node<T>(val);
-        node->next = head;
-        head = node;
-        size++;
+        if(head == nullptr) {
+            head = node;
+            tail = node;
+            size++;
+        }
+        else {
+            node->next = head;
+            head->prev = node;
+            head = node;
+            size++;
+        }
+    }
+
+    void append(T val) {
+        auto *node = new Node<T>(val);
+        node->next = nullptr;
+        if(head == nullptr) {
+            head = node;
+            tail = node;
+            size++;
+        }
+        else {
+            tail->next = node;
+            node->prev = tail;
+            tail = node;
+            size++;
+        }
+    }
+
+    Node<T>* find_mid_node(Node<T>* start, Node<T>* end) {
+        // case linked list is empty
+        if(start == nullptr) {
+           return nullptr;
+        }
+        Node<T>* ahead = start->next;
+        Node<T>* behind = start;
+        while(ahead!=end) {
+            ahead = ahead ->next;
+            if(ahead!=end) {
+                behind = behind->next;
+                ahead = ahead->next;
+            }
+        }
+        return behind;
+    }
+
+    Node<T>* binary_search(T target_val) {
+        Node<T>* start = head;
+        Node<T>* end = nullptr;
+        do {
+            Node<T>* mid = find_mid_node(start,end);
+            if(mid == nullptr) {
+                return nullptr;
+            }
+            if(mid->val == target_val){
+                std::cout << "Found the target element! Value: " << mid->val <<std::endl;
+                return mid;
+            }
+            else if(mid->val < target_val) {
+                start = mid->next;
+
+            }
+            else {
+                end = mid;
+            }
+        } while(end == NULL || end->next != start);
+
+        std::cout << "Element not present" << std::endl;
+        return NULL;
     }
 
     int get_size(){
@@ -92,6 +159,14 @@ public:
             return *this;
         }
 
+        self_type operator--(int junk) {
+            if(ptr_ == nullptr) {
+                return *this;
+            }
+            ptr_ = ptr_->prev;
+            return *this;
+        }
+
         reference operator*() {
             return ptr_->get_val();
         }
@@ -118,6 +193,8 @@ public:
     }
 
 };
+
+
 
 
 //template <typename T>

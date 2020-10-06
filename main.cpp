@@ -21,12 +21,29 @@ void fill_vect_rand_stings(Vector<std::string> &vect, int size) {
             c = int_dist(bl); // - '0';
             rand_string += c;
         }
-        //std::cout << rand_string << std::endl;
         vect.push(std::move(rand_string));
         rand_string = "";
         j++;
     }
 
+}
+
+void fill_ll_rand_strings(List<std::string> &list, int size) {
+    std::random_device rd;
+    std::mt19937 bl(rd());
+    std::uniform_int_distribution<int> int_dist(32, 126);
+    std::string rand_string;
+    char c;
+    int j = 0;
+    while (j < size) {
+        for(int i = 0; i < size; ++i) {
+            c = int_dist(bl); // - '0';
+            rand_string += c;
+        }
+        list.prepend(std::move(rand_string));
+        rand_string = "";
+        j++;
+    }
 }
 
 void fill_vect_with_randnums(Vector<int> &arr, int size) {
@@ -50,7 +67,7 @@ void fill_ll_with_randnums(List<int> &list, int size) {
     int j = 1;
     int random_offset;
     for (int i = 0; i < size; ++i) {
-        list.prepend(j);
+        list.append(j);
         random_offset = int_dist(bloop);
         j += random_offset;
     }
@@ -176,15 +193,24 @@ int main() {
     int size;
     std::cout << "What size would you like the vector and list to be? ";
     std::cin >> size;
-    Vector<std::string> vect;
-    fill_vect_rand_stings(vect,size);
 
-    for(int i = 0; i <= vect.size(); ++i) {
-        std::cout << vect[i] << " ";
-    }
+    std::cout << "\nNow timing filling Linked List with random strings: "  <<std::endl;
+    List<std::string> list_strings;
+    auto start_ll_strings = std::chrono::high_resolution_clock::now();
+    fill_ll_rand_strings(list_strings, size);
+    auto stop_ll_strings = std::chrono::high_resolution_clock::now();
+    auto time_strings = std::chrono::duration_cast<std::chrono::microseconds>(stop_ll_strings - start_ll_strings).count();
+    std::cout << "Time to fill with random nums: "<< time_strings << std::endl;
 
-    /*
-    std::cout << "\nNow filling Linked List with random numbers: "  <<std::endl;
+    std::cout << "\nNow timing filling Vector with random strings: "  <<std::endl;
+    Vector<std::string> vect_strings;
+    auto start_vect_strings = std::chrono::high_resolution_clock::now();
+    fill_vect_rand_stings(vect_strings,size);
+    auto stop_vect_strings = std::chrono::high_resolution_clock::now();
+    auto duration_strings = std::chrono::duration_cast<std::chrono::microseconds>(stop_vect_strings - start_vect_strings).count();
+    std::cout << "Time to fill with random strings: "<< duration_strings << std::endl;
+    
+    std::cout << "\nNow timing filling Linked List with random numbers: "  <<std::endl;
     List<int> list;
     auto start_ll = std::chrono::high_resolution_clock::now();
     fill_ll_with_randnums(list, size);
@@ -192,15 +218,14 @@ int main() {
     auto time = std::chrono::duration_cast<std::chrono::microseconds>(stop_ll - start_ll).count();
     std::cout << "Time to fill with random nums: "<< time << std::endl;
 
-    std::cout << "\nNow filling Vector with random numbers" << std::endl;
-    Vector<int> vect;
-
+    std::cout << "\nNow timing filling Vector with random numbers" << std::endl;
+    Vector<int> vect_int;
     auto start_vect = std::chrono::high_resolution_clock::now();
-    fill_vect_with_randnums(vect, size);
+    fill_vect_with_randnums(vect_int, size);
     auto stop_vect = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop_vect - start_vect).count();
     std::cout << "Time to fill with random nums: "<< duration << std::endl;
-    */
+
 
     delete [] arr_100mill;
     delete [] arr_10mill;
