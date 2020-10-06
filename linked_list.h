@@ -8,6 +8,7 @@ template <typename T> class Node {
 
     T val;
     Node<T> *next = nullptr;
+    Node<T> *prev = nullptr;
 
 public:
     explicit Node(T value) {
@@ -23,11 +24,21 @@ template <typename T> class List {
     Node<T> *head = nullptr;
     int size = 0;
 
+//    Node<T> storage[1000000];
+ //   unsigned char storage[sizeof(Node<T>) * 1000] = {0};
+
 public:
     void prepend(T val) {
-        Node<T> *node = new Node<T>(val);
+        //void *tgt = &storage[size * sizeof(Node<T>)];
+        //auto *node = new(tgt) Node<T>(val);
+        auto *node = new Node<T>(val);
         node->next = head;
         head = node;
+        size++;
+    }
+
+    int get_size(){
+        return size;
     }
 
     void print_list() {
@@ -39,15 +50,13 @@ public:
       }
     }
 
-    int get_size() {
-        return size;
-    }
-
     ~List() noexcept {
         Node<T> *temp = head;
 
         while(temp != nullptr) {
             Node<T> *tempnext = temp->next;
+            // The delete line would not be included if I was pre-allocating space
+            // for the list to remove the overhead of allocating for every element of list
             delete temp;
             temp = tempnext;
         }
@@ -109,6 +118,7 @@ public:
     }
 
 };
+
 
 //template <typename T>
 
