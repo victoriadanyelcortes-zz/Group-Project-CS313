@@ -74,7 +74,6 @@ public:
 
     //destructor
     ~Vector() {
-        //std::cout << "In Destructor" << std::endl;
         delete [] arr;
     }
 

@@ -73,7 +73,7 @@ void fill_ll_with_randnums(List<int> &list, int size) {
     }
 }
 
-int recursive_binary_search(const int* arr, int left, int right, int target) {
+int recursive_binary_search(uint64_t *arr, int left, int right, int target) {
     //right = right -1;
     if(left > right) {
         std::cout << "Not in list" << std::endl;
@@ -91,11 +91,12 @@ int recursive_binary_search(const int* arr, int left, int right, int target) {
     }
 }
 
-int iterative_binary_search(const int* arr, int target, int size) {
+int iterative_binary_search(const uint64_t* arr, int target, int size) {
     int left = 0, right = size-1;
     while(left <= right) {
         int mid = (right+left)/2;
         if(target == arr[mid]) {
+            std::cout << "Found at index: " << mid << std::endl;
             return mid;
         }
         else if (target < arr[mid]) {
@@ -109,15 +110,16 @@ int iterative_binary_search(const int* arr, int target, int size) {
     return -1;
 }
 
-void fill_with_rands(int* arr,int size) {
+void fill(uint64_t* arr, int size) {
     srand(time(0));
     int random_offset;
     // start with one and add a random offset to each index of array
-    int j = 1;
-    for(int i = 0; i < size; ++i) {
+    int j = 2;
+    arr[0] = 1;
+    for(int i = 1; i < size; ++i) {
         arr[i] = j;
         random_offset = rand() % 100;
-        j = j + random_offset;
+        j += random_offset;
     }
 }
 
@@ -127,21 +129,36 @@ int main() {
     int hundred_mill= 100000000, ten_mill = 10000000, mill =1000000;
     //using dynamically allocated arrays as typical declaration caused seg fault
     // for trying to access too much stack mem for the two larger arrays
-    int arr_mill[1000000];
-    int* arr_10mill = new int[10000000];
-    int* arr_100mill = new int[hundred_mill];
+    uint64_t arr_mill[1000000];
+    auto* arr_10mill = new uint64_t [10000000];
+    auto* arr_100mill = new uint64_t[hundred_mill];
 
-    //fill each with sorted random numbers
-    fill_with_rands(arr_mill, 1000000);
-    fill_with_rands(arr_10mill, 10000000);
-    fill_with_rands(arr_100mill, hundred_mill);
+    //declare 3 lists of the required sizes to be search and compared to
+    List<int> list_1mill;
+    List<int> list_10mill;
+    //List<int> list_100mill;
 
-    for(int  i = 0; i < 5; ++i) {
-        std::cout << arr_100mill[i] << " ";
-    }
+    //fill_ll_with_randnums(list_100mill,hundred_mill);
+    fill_ll_with_randnums(list_10mill,ten_mill);
+    fill_ll_with_randnums(list_1mill,mill);
 
-    std::cout << arr_100mill[hundred_mill-1] << std::endl;
+    //fill each array with sorted random numbers
+    fill(arr_mill, 1000000);
+    fill(arr_10mill, 10000000);
+    fill(arr_100mill,hundred_mill);
 
+
+    auto binary_ll_start = std::chrono::high_resolution_clock::now();
+    list_1mill.binary_search(1);
+    auto binary_ll_stop = std::chrono::high_resolution_clock::now();
+    auto time_ll = std::chrono::duration_cast<std::chrono::microseconds>(binary_ll_stop-binary_ll_start).count();
+    std::cout << "Time to find the known number for linked list of size 1 million(linked-type search): " << time_ll << std::endl;
+
+    auto binary_ll_start_10mil = std::chrono::high_resolution_clock::now();
+    list_10mill.binary_search(1);
+    auto binary_ll_stop_10mil = std::chrono::high_resolution_clock::now();
+    auto time_ll_10mill = std::chrono::duration_cast<std::chrono::microseconds>(binary_ll_stop-binary_ll_start).count();
+    std::cout << "Time to find the known number for linked list of size 10 million(linked-type search): " << time_ll_10mill << std::endl;
 
     //NOTE: all arrays  will be timed & searched twice, the first time will be with a
     // number that is definitely in the array, which will be 1, and the second with a random number
@@ -173,17 +190,20 @@ int main() {
 
     //std::cout << recursive_binary_search(arr_10mill,1,0,10000000) << " ";
     //timing array of size 100 million with iterative and recursive binary search
-    //auto binary_100mill_start = std::chrono::high_resolution_clock::now();
+    auto binary_100mill_start = std::chrono::high_resolution_clock::now();
     iterative_binary_search(arr_100mill, 1,hundred_mill);
-    //auto binary_100mill_stop = std::chrono::high_resolution_clock::now();
-    //auto duration_100mill_iterative =std::chrono::duration_cast<std::chrono::microseconds>(binary_mill_stop - binary_mill_start).count();
-    //std::cout << "Time to find the known number for array of size 100 million using iterative search: " << duration_100mill_iterative << std::endl;
+    auto binary_100mill_stop = std::chrono::high_resolution_clock::now();
+    auto duration_100mill_iterative =std::chrono::duration_cast<std::chrono::microseconds>(binary_mill_stop - binary_mill_start).count();
+    std::cout << "Time to find the known number for array of size 100 million using iterative search: " << duration_100mill_iterative << std::endl;
 
-    //auto start_100mill_rec= std::chrono::high_resolution_clock::now();
+    auto start_100mill_rec= std::chrono::high_resolution_clock::now();
     recursive_binary_search(arr_100mill,0,hundred_mill-1, 1);
-    //auto stop_100mill_rec = std::chrono::high_resolution_clock::now();
-    //auto duration_100mill_recursive = std::chrono::duration_cast<std::chrono::microseconds>(start_mill_rec-stop_mill_rec).count();
-    //std::cout << "Time to find the known number for array of size 100 million using recurisve search: "  << duration_100mill_recursive << std::endl;
+    auto stop_100mill_rec = std::chrono::high_resolution_clock::now();
+    auto duration_100mill_recursive = std::chrono::duration_cast<std::chrono::microseconds>(start_mill_rec-stop_mill_rec).count();
+    std::cout << "Time to find the known number for array of size 100 million using recurisve search: "  << duration_100mill_recursive << std::endl;
+    for(int  i = 0; i < 5; ++i) {
+        std::cout << arr_100mill[i] << " ";
+    }
 
 
 
@@ -209,7 +229,7 @@ int main() {
     auto stop_vect_strings = std::chrono::high_resolution_clock::now();
     auto duration_strings = std::chrono::duration_cast<std::chrono::microseconds>(stop_vect_strings - start_vect_strings).count();
     std::cout << "Time to fill with random strings: "<< duration_strings << std::endl;
-    
+
     std::cout << "\nNow timing filling Linked List with random numbers: "  <<std::endl;
     List<int> list;
     auto start_ll = std::chrono::high_resolution_clock::now();

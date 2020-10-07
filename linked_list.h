@@ -29,7 +29,7 @@ template <typename T> class List {
 //   unsigned char storage[sizeof(Node<T>) * 1000] = {0};
 
 public:
-    void prepend(T val) {
+    void prepend(T&& val) {
         //void *tgt = &storage[size * sizeof(Node<T>)];
         //auto *node = new(tgt) Node<T>(val);
         auto *node = new Node<T>(val);
