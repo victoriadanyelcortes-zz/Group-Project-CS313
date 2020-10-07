@@ -111,7 +111,7 @@ int iterative_binary_search(const uint64_t* arr, int target, int size) {
         int mid = (right+left)/2;
         if(target == arr[mid]) {
             //if the number is found
-            std::cout << "Found at index: " << mid << std::endl;
+            //std::cout << "Found at index: " << mid << std::endl; <-- This line can be uncommented for testing purposes
             return mid;
         }
         else if (target < arr[mid]) {
