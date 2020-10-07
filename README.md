@@ -5,29 +5,29 @@ of group 1. All relevant code is included in the master branch, other branches a
 # Question 2 Explanation
 For the arrays I decided to make the type uint64_t to prevent integer overflow especially for the larget size array.
 When it came to implementing the iterative and recursive binary search for the arrays, I decided to take an "if it ain't
-broke don't fix it" approach. So, I used the given code from class and changed it to better fit my usage. But, when it came
-to the linked-type binary search I decided to implement binary search on a linked list. I do not think this is the most efficient
-implementation of linked-type binary search, but I will include what I think would be a better structure to implement in my conclusion section
+broke don't fix it" approach. So, I used the given code from class and changed it to better fit my usage. 
+
+When it cameto the linked-type binary search I decided to implement binary search on a linked list. I do not think this is the most efficient
+implementation of linked-type binary search, but I will include what I think would be a better structure to implement in my conclusion section.
 I used my own linked list ADT, which I implemented for question 7, and to that added a function to find the middle node 
 using a dual pointer method. In the function to find the middle node, there is an ahead and behind pointer, and the behind
 pointer contains the middle node. Then, the actual search function acts very similarly to iteravtive binary search.
 I was not able to fill a linked with with 100 million random numbers to perform the search since it required too much space.
-I will continue to look into ways to make this possible. After I implemented the binary search functions, I timed each 
-type of search using chrono in microseconds since milliseconds was too small, which finished the problem. All conclusions
-about time will be included in the conclusions sections.
+I will continue to look into ways to make this possible. 
+
+After I implemented the binary search functions, I timed each type of search using chrono in microseconds since milliseconds was too small, which finished the problem. All conclusions about time will be included in the conclusions sections.
  
 # Question 7 Explanation
 For this question I implemented my own linked list and vector ADTs. I did this using templates so they could be used for 
-multiple types. For the linked list, I created a node class, list class, and iterator. Implementing the Node class was fairly easy, as well as the list class as I had 
-done this before. For the iterator, there are using statements in the class because that is a standard, but not all are used. The class itself is fairly standard,
+multiple types. 
+
+For the linked list, I created a node class, list class, and iterator. Implementing the Node class was fairly easy, as well as the list class as I had done this before. For the iterator, there are using statements in the class because that is a standard, but not all are used. The class itself is fairly standard,
 and the implementation is well commented. I decided to make the prepend function in the list class take an rvalue and used that to add random strings to the list. 
 But, I did not modify the append function to do the same. In both functions, a pointer to the next value and previous value are created to ensure there is a link.
-For the vector class, I started by using the rule of 5 and implemented everything that was needed to complete that. I used the videos on move semantics to help. After that,
-I implemented a simple push and pop function meant to act like push_back and pop_back. For the push function, I decided that the array should be doubled each time the 
-capacity is met. For pop, I just decreased the size by 1. And, I implemented a basic size function that returns the current size of the array, not the capacity. I think
-it would be interesting to make this a more full-fledged impementation, but for the purposes of this assignment these functions were the most useful. Again in the main function,
-I filled these with a user given amount of random numbers and random strings using the c++11 random library, and then timed using chrono. All conclusions made will be included in the conclusions 
-section. 
+
+For the vector class, I started by using the rule of 5 and implemented everything that was needed to complete that. I used the videos on move semantics to help. After that,I implemented a simple push and pop function meant to act like push_back and pop_back. For the push function, I decided that the array should be doubled each time the capacity is met. For pop, I just decreased the size by 1. And, I implemented a basic size function that returns the current size of the array, not the capacity. I think it would be interesting to make this a more full-fledged impementation, but for the purposes of this assignment these functions were the most useful. 
+
+Lastly in the main function,I filled these with a user given amount of random numbers and random strings using the c++11 random library, and then timed using chrono. All conclusions made will be included in the conclusions section. 
 
 # Conclusions
 
