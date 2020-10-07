@@ -1,7 +1,6 @@
 #include <iostream>
 #include "linked_list.h"
 #include "Vector.h"
-#include <cstdlib>
 #include <vector>
 #include <chrono>
 #include <random>
