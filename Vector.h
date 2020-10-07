@@ -11,14 +11,9 @@ private:
 
 public:
     Vector(){
+        // instantiate all variables
         cur_size = 0;
         capacity = 10;
-        arr = new T[capacity];
-    }
-
-    explicit Vector(int size) {
-        cur_size = size;
-        capacity = size*2;
         arr = new T[capacity];
     }
 
@@ -35,7 +30,8 @@ public:
 
     //assignment operator
     Vector& operator=(const Vector &obj) {
-        if(this!= &obj) {
+        // just to make sure there's no assigning to itself
+        if(this != &obj) {
             if(cur_size > 0) {
                 delete [] arr;
             }
@@ -48,6 +44,7 @@ public:
         }
     }
 
+    // overloading operator to allow for vector elements to be accessed using square brackets
     T& operator[](int index) {
         return arr[index];
     }
@@ -104,6 +101,7 @@ public:
     }
 
     T pop() {
+        // decrease size by one
         arr[cur_size-1] = 0;
         cur_size--;
     }

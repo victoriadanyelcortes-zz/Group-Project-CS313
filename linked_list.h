@@ -25,11 +25,13 @@ template <typename T> class List {
     Node<T> *tail = nullptr;
     int size = 0;
 
+//   Example pre-allocation code:S
 //   Node<T> storage[1000000];
 //   unsigned char storage[sizeof(Node<T>) * 1000] = {0};
 
 public:
     void prepend(T&& val) {
+        // These two lines are an example of how pre-allocation would work.
         //void *tgt = &storage[size * sizeof(Node<T>)];
         //auto *node = new(tgt) Node<T>(val);
         auto *node = new Node<T>(val);
@@ -39,6 +41,9 @@ public:
             size++;
         }
         else {
+            // set the new node's next equal to the current head
+            // set the previous of the current head to the new node
+            // set new node to head and increase size
             node->next = head;
             head->prev = node;
             head = node;
@@ -47,14 +52,19 @@ public:
     }
 
     void append(T val) {
+        // allocate new node for the value
         auto *node = new Node<T>(val);
         node->next = nullptr;
+        // if the list is empty
         if(head == nullptr) {
             head = node;
             tail = node;
             size++;
         }
         else {
+            // take the current take, set its next to the new node and
+            // set the new nodes previous to the old tail
+            // set node to tail and increase size
             tail->next = node;
             node->prev = tail;
             tail = node;
@@ -63,13 +73,16 @@ public:
     }
 
     Node<T>* find_mid_node(Node<T>* start, Node<T>* end) {
-        // case linked list is empty
+        // if the linked list is empty
         if(start == nullptr) {
            return nullptr;
         }
+        // set ahead node to be futher in the list than behind
         Node<T>* ahead = start->next;
         Node<T>* behind = start;
         while(ahead!=end) {
+            //set ahead node 2X ahead the behind node, this ensure behind is
+            //in the middle when ahead reaches the end
             ahead = ahead ->next;
             if(ahead!=end) {
                 behind = behind->next;
@@ -80,28 +93,35 @@ public:
     }
 
     Node<T>* binary_search(T target_val) {
+        //set a "left/low" and "right/high" to find middle node
         Node<T>* start = head;
         Node<T>* end = nullptr;
         do {
             Node<T>* mid = find_mid_node(start,end);
             if(mid == nullptr) {
+                //if the list if empty
                 return nullptr;
             }
             if(mid->val == target_val){
-                std::cout << "Found the target element! Value: " << mid->val <<std::endl;
+                //if the val at the middle node is the target value,
+                // our search has been successful
+               // std::cout << "Found the target element! Value: " << mid->val <<std::endl;
                 return mid;
             }
             else if(mid->val < target_val) {
+                // reset start if the middle value is smaller to
+                // mid+1 to search upper half of list
                 start = mid->next;
 
             }
             else {
+                //reset end to the middle if value is in lower half of list
                 end = mid;
             }
-        } while(end == NULL || end->next != start);
+        } while(end == nullptr || end->next != start);
 
         std::cout << "Element not present" << std::endl;
-        return NULL;
+        return nullptr;
     }
 
     int get_size(){
@@ -111,6 +131,7 @@ public:
     void print_list() {
       Node<T> *temp = head;
 
+      // print out each value of the list until temp reaches the end
       while(temp != nullptr) {
           std::cout << temp->val << std::endl;
           temp = temp->next;
@@ -119,7 +140,7 @@ public:
 
     ~List() noexcept {
         Node<T> *temp = head;
-
+        // go through and delete each node
         while(temp != nullptr) {
             Node<T> *tempnext = temp->next;
             // The delete line would not be included if I was pre-allocating space
@@ -141,6 +162,7 @@ public:
         using pointer = T*;
         using reference = T&;
 
+        // The following is just overloading operators that allow iteration through the list
         explicit Itr(Node<T> *ptr) : ptr_(ptr) { }
         self_type operator++() {
             if(ptr_ == nullptr) {
@@ -194,9 +216,5 @@ public:
 
 };
 
-
-
-
-//template <typename T>
 
 #endif //TEMPLATE_PRACTICE_LINKED_LIST_H
