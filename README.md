@@ -7,7 +7,7 @@ For the arrays I decided to make the type uint64_t to prevent integer overflow e
 When it came to implementing the iterative and recursive binary search for the arrays, I decided to take an "if it ain't
 broke don't fix it" approach. So, I used the given code from class and changed it to better fit my usage. 
 
-When it cameto the linked-type binary search I decided to implement binary search on a linked list. I do not think this is the most efficient
+When it came to the linked-type binary search I decided to implement binary search on a linked list. I do not think this is the most efficient
 implementation of linked-type binary search, but I will include what I think would be a better structure to implement in my conclusion section.
 I used my own linked list ADT, which I implemented for question 7, and to that added a function to find the middle node 
 using a dual pointer method. In the function to find the middle node, there is an ahead and behind pointer, and the behind
